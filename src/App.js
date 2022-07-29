@@ -19,11 +19,7 @@ class App extends Component {
     return (
       <div>
         <br></br>
-        <div className='inline-add-search'>
-        <TextField id="filled-basic" label="Search" variant="filled" size="small" sx={{right:-430,top:40}} color='warning'/>
-        <DialogBoxAddPost />
-        </div>
-        <Table/>
+        <Table/>   
       </div>
       
       

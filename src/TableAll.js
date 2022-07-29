@@ -16,14 +16,14 @@ import DialogBoxAddPost from './DialogBoxAddPost';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor:"#ED6C02",
+    backgroundColor:"black",
     color: theme.palette.common.white,
-    fontSize:20,
-    fontFamily: 'Quicksand',
+    fontSize:18,
+    fontFamily: 'Times-New-Roman',
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    fontFamily: 'Quicksand',
+    fontFamily: 'Sans-Serif',
   },
 }));
 
@@ -31,7 +31,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -50,7 +49,7 @@ export default function Tableall() {
       })
 
       .then((data) => {
-        setPosts(data.slice(0, 6));
+        setPosts(data.slice(3,8));
       });
 
   };
