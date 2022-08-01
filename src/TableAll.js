@@ -12,18 +12,19 @@ import './App.css';
 import { useEffect, useState } from "react";
 import  DialogBoxEdit from './DialogBoxEdit';
 import DialogBoxAddPost from './DialogBoxAddPost';
+import useResponsiveDialog from './DialogBoxAddPost';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor:"black",
+    backgroundColor:"#ED6C02",
     color: theme.palette.common.white,
-    fontSize:18,
-    fontFamily: 'Times-New-Roman',
+    fontSize:20,
+    fontFamily: 'Quicksand',
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    fontFamily: 'Sans-Serif',
+    fontFamily: 'Quicksand',
   },
 }));
 
@@ -31,14 +32,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
+  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 }));
 
 
-export default function Tableall() {
+export default function Tableall({message1,message2}) {
   const [posts, setPosts] = useState([])
+  console.log({message1},{message2});
 
   const fetchData = () => {
 
@@ -49,7 +52,7 @@ export default function Tableall() {
       })
 
       .then((data) => {
-        setPosts(data.slice(3,8));
+        setPosts(data.slice(0, 6));
       });
 
   };
@@ -60,13 +63,19 @@ export default function Tableall() {
     fetchData()
 
   }, []);
-
+  const handleSave = React.useCallback((title, body) => {
+    setPosts((prev) => [
+      ...prev,
+      { userId: 123, title, body, id: prev.length }
+    ]);
+  }, []);
+  
   const handleDelete = (postIndex) => {
     setPosts((prevPosts) =>
       prevPosts.filter((_, index) => index !== postIndex)
     );
   };
-
+  
   return (
     <TableContainer sx={{
       marginLeft:'auto',
@@ -78,8 +87,8 @@ export default function Tableall() {
           <TableRow>
             <StyledTableCell sx={{width:250}}>Title</StyledTableCell>
             <StyledTableCell align="center" sx={{width:500}}>Description</StyledTableCell>
-            <StyledTableCell align="center" sx={{width:100}}></StyledTableCell>
-            <StyledTableCell align="center"sx={{width:100}}></StyledTableCell>
+            <StyledTableCell align="center" sx={{width:150}}></StyledTableCell>
+            <StyledTableCell align="center"sx={{width:150}}><DialogBoxAddPost onSave={handleSave}/></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -87,12 +96,17 @@ export default function Tableall() {
             <StyledTableRow key={post.id}>
               <StyledTableCell component="th" scope="row">{post.title}</StyledTableCell>
               <StyledTableCell align="center">{post.body}</StyledTableCell>
-              <StyledTableCell align="center"><DialogBoxEdit dataParent1={post.title} dataParent2={post.body} /></StyledTableCell>
+              <StyledTableCell align="center">
+                <DialogBoxEdit dataParent1={post.title} dataParent2={post.body} postIndex={postIndex} onSaveChanges={setPosts}/>
+            </StyledTableCell>
               <StyledTableCell align="center"><Button variant="outlined" color="error" onClick={() => handleDelete(postIndex)}>Delete</Button></StyledTableCell>
             </StyledTableRow>
-          ))}
+            ))}
+            
         </TableBody>
       </Table>
+      
     </TableContainer>
+    
   );
 }
